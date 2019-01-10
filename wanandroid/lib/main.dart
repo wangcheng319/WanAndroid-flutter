@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'pages/homepage.dart';
+import 'pages/mepage.dart';
+import 'pages/projectpage.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -35,10 +39,10 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   final List<Widget> _contents = <Widget>[
-    Text("首页"),
-    Text("项目"),
-    Text("公众号"),
-    Text("我"),
+    HomePage(),
+    ProjectPage(),
+    MePage(),
+    MePage(),
   ];
 
   PageController _pageController;
@@ -52,9 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
           child: PageView(
         children: _contents,
@@ -78,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     _pageController.animateToPage(value,
-        duration: const Duration(milliseconds: 300), curve: Curves.ease);
+        duration: const Duration(milliseconds: 1), curve: Curves.ease);
   }
 
   ///切换content

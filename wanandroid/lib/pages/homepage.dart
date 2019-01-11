@@ -7,6 +7,7 @@ import 'dart:io';
 
 import '../data/banneritem.dart';
 import '../data/banner.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 ///主页面
 class HomePage extends StatefulWidget {
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage>
 
   List<String> _banners;
   BannerItem bannerItem;
-  List datas;
+  List datas = [];
 
   @override
   void initState() {
@@ -66,10 +67,11 @@ class _HomePageState extends State<HomePage>
         margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
         child: Row(
           children: <Widget>[
-            Image.network(
-              "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3239375993,4053990160&fm=27&gp=0.jpg",
-              width: 60,
-              height: 60,
+            FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3239375993,4053990160&fm=27&gp=0.jpg',
+              width: 50,
+              height: 50,
             ),
             Expanded(
               child: Row(

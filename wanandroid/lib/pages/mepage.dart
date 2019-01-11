@@ -1,4 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import '../data/user.dart';
+import '../data/banneritem.dart';
+import '../data/banner.dart';
 
 ///我
 class MePage extends StatefulWidget {
@@ -13,6 +19,7 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
+
   }
 
   @override
@@ -55,7 +62,7 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
             child: new Column(
               children: <Widget>[
                 Text("1"),
-                Text("2"),
+                Text("3"),
               ],
             ),
             flex: 1,

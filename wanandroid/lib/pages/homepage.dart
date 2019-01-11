@@ -2,6 +2,11 @@ import 'dart:ui' as ui;
 
 import 'package:banner/banner.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
+
+import '../data/banneritem.dart';
+import '../data/banner.dart';
 
 ///主页面
 class HomePage extends StatefulWidget {
@@ -14,11 +19,15 @@ class _HomePageState extends State<HomePage>
   AnimationController _controller;
 
   List<String> _banners;
+  BannerItem bannerItem;
+  List datas;
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
+
+    getBanners();
   }
 
   @override
@@ -36,14 +45,13 @@ class _HomePageState extends State<HomePage>
       "http://www.wanandroid.com/blogimgs/50c115c2-cf6c-4802-aa7b-a4334de444cd.png",
       "http://www.wanandroid.com/blogimgs/fb0ea461-e00a-482b-814f-4faca5761427.png"
     ];
-
     return Scaffold(
       appBar: AppBar(
         title: Text("首页"),
       ),
       body: ListView.builder(
         itemBuilder: _buildItem,
-        itemCount: 100,
+        itemCount: datas.length,
       ),
     );
   }
@@ -55,7 +63,7 @@ class _HomePageState extends State<HomePage>
       );
     } else {
       return Card(
-        margin: const EdgeInsets.only(top: 10),
+        margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
         child: Row(
           children: <Widget>[
             Image.network(
@@ -71,7 +79,7 @@ class _HomePageState extends State<HomePage>
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: <Widget>[
-                        Text("标题"),
+                        Text(datas[index].title),
                         Text("标题2"),
                       ],
                     ),
@@ -107,5 +115,30 @@ class _HomePageState extends State<HomePage>
       _banners[index],
       fit: BoxFit.fill,
     );
+  }
+
+  void getBanners() {
+    HttpClient client = HttpClient();
+    client
+        .getUrl(Uri.parse("http://www.wanandroid.com/banner/json"))
+        .then((HttpClientRequest request) {
+      return request.close();
+    }).then((HttpClientResponse response) {
+      response.transform(utf8.decoder).listen((contents) {
+        // handle data
+        Map<String, dynamic> user = json.decode(contents);
+        bannerItem = BannerItem.fromJson(user);
+        print("==================");
+
+        print(bannerItem.data.first.url) ;
+        print(bannerItem.errorCode);
+
+        setState(() {
+          datas = bannerItem.data;
+        });
+
+        print(datas[1].title);
+      });
+    });
   }
 }

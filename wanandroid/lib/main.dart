@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'pages/homepage.dart';
 import 'pages/mepage.dart';
 import 'pages/projectpage.dart';
+import 'pages/weixinpage.dart';
+
+import 'data/user.dart';
+import 'dart:convert';
 
 void main() => runApp(MyApp());
 
@@ -41,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _contents = <Widget>[
     HomePage(),
     ProjectPage(),
-    MePage(),
+    WxPage(),
     MePage(),
   ];
 
@@ -51,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
+
   }
 
   @override

@@ -23,8 +23,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
+    //获取banners
     getBanners();
+    //获取首页文章
+    getArticles();
   }
 
   @override
@@ -40,15 +42,10 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Stack(
         children: <Widget>[
-          Container(
-            height: 200,
-            child: new Swiper(
-              itemCount: datas.length,
-              itemBuilder: _buildBanner,
-              pagination: new SwiperPagination(),
-              autoplay: true,
-              onTap: clickBanner,
-            ),
+          Column(
+            children: <Widget>[
+              buildBannerLayout()
+            ],
           ),
           Container(
             child: new ListView.builder(
@@ -65,45 +62,35 @@ class _HomePageState extends State<HomePage> {
   /// 列表item
   Widget _buildItem(BuildContext context, int index) {
     return Card(
-      margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-      child: Row(
-        children: <Widget>[
-          FadeInImage.memoryNetwork(
+        margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+        child: ListTile(
+          contentPadding: const EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
+          leading: FadeInImage.memoryNetwork(
             placeholder: kTransparentImage,
             image:
                 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3239375993,4053990160&fm=27&gp=0.jpg',
             width: 50,
             height: 50,
           ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          title: Text(
+            datas[index].title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text("副标题"),
+          trailing: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: <Widget>[
-                      Text(datas[index].title),
-                      Text("标题2"),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: <Widget>[
-                      Text("阅读量"),
-                      Text("时间"),
-                    ],
-                  ),
-                ),
+                Text("阅读量"),
+                Text("时间"),
               ],
             ),
-            flex: 1,
-          )
-        ],
-      ),
-    );
+          ),
+          onTap: () {
+            print("点击了第$index");
+          },
+        ));
   }
 
   /// banner
@@ -115,7 +102,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   ///获取banner数据
-  void getBanners() {
+  void getBanners() async {
     HttpClient client = HttpClient();
     client
         .getUrl(Uri.parse("http://www.wanandroid.com/banner/json"))
@@ -138,5 +125,51 @@ class _HomePageState extends State<HomePage> {
   ///点击banner
   void clickBanner(int index) {
     print(datas[index].title);
+  }
+
+  Widget buildBannerLayout() {
+    if (datas.length > 0) {
+      return new Container(
+        height: 200,
+        child:Swiper(
+        itemCount: datas.length,
+        itemBuilder: _buildBanner,
+        pagination: new SwiperPagination(),
+        autoplay: true,
+        onTap: clickBanner,
+      ),);
+    } else {
+      return Container(
+        child: LinearProgressIndicator(
+          backgroundColor: Colors.blueAccent,
+          valueColor: AlwaysStoppedAnimation(Colors.yellow),
+        ),
+      );
+    }
+  }
+
+  /// 获取首页文章
+  void getArticles() {
+    HttpClient client = HttpClient();
+    client
+        .getUrl(Uri.parse("http://www.wanandroid.com/article/list/0/json"))
+        .then((HttpClientRequest request) {
+      return request.close();
+    }).then((HttpClientResponse response) {
+      response.transform(utf8.decoder).listen((contents) {
+        Map<String, dynamic> articles = json.decode(contents);
+        print(contents);
+
+
+//        // 拿到json数据
+//        Map<String, dynamic> user = json.decode(contents);
+//        //json解析
+//        bannerItem = BannerItem.fromJson(user);
+//        //刷新数据
+//        setState(() {
+//          datas = bannerItem.data;
+//        });
+      });
+    });
   }
 }

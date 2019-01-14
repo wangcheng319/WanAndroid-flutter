@@ -37,25 +37,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("首页"),
-      ),
-      body: Stack(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              buildBannerLayout()
-            ],
-          ),
-          Container(
-            child: new ListView.builder(
-              itemBuilder: _buildItem,
-              itemCount: datas.length,
-            ),
-            margin: const EdgeInsets.only(top: 200),
-          )
-        ],
-      ),
+      body: NestedScrollView(
+          headerSliverBuilder: _sliverBuilder,
+          body: ListView.builder(
+            itemBuilder: _buildItem,
+            itemCount: datas.length,
+          )),
     );
   }
 
@@ -64,7 +51,8 @@ class _HomePageState extends State<HomePage> {
     return Card(
         margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
         child: ListTile(
-          contentPadding: const EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
+          contentPadding:
+              const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
           leading: FadeInImage.memoryNetwork(
             placeholder: kTransparentImage,
             image:
@@ -127,17 +115,19 @@ class _HomePageState extends State<HomePage> {
     print(datas[index].title);
   }
 
-  Widget buildBannerLayout() {
+  ///banner
+  Widget buildBannerLayout(BuildContext context, int index) {
     if (datas.length > 0) {
       return new Container(
         height: 200,
-        child:Swiper(
-        itemCount: datas.length,
-        itemBuilder: _buildBanner,
-        pagination: new SwiperPagination(),
-        autoplay: true,
-        onTap: clickBanner,
-      ),);
+        child: Swiper(
+          itemCount: datas.length,
+          itemBuilder: _buildBanner,
+          pagination: new SwiperPagination(),
+          autoplay: true,
+          onTap: clickBanner,
+        ),
+      );
     } else {
       return Container(
         child: LinearProgressIndicator(
@@ -157,19 +147,31 @@ class _HomePageState extends State<HomePage> {
       return request.close();
     }).then((HttpClientResponse response) {
       response.transform(utf8.decoder).listen((contents) {
-        Map<String, dynamic> articles = json.decode(contents);
-        print(contents);
 
-
-//        // 拿到json数据
-//        Map<String, dynamic> user = json.decode(contents);
-//        //json解析
-//        bannerItem = BannerItem.fromJson(user);
-//        //刷新数据
-//        setState(() {
-//          datas = bannerItem.data;
-//        });
       });
     });
+  }
+
+  ///顶部banner和标题栏
+  List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled) {
+    return <Widget>[
+      SliverAppBar(
+        title: Text("首页"),
+        centerTitle: true, //标题居中
+        expandedHeight: 200.0, //展开高度200
+        floating: false, //不随着滑动隐藏标题
+        pinned: false, //固定在顶部
+        leading: null,
+        flexibleSpace: FlexibleSpaceBar(
+          centerTitle: true,
+          background: Swiper(
+            itemCount: 3,
+            itemBuilder: buildBannerLayout,
+            pagination: new SwiperPagination(),
+            autoplay: true,
+          ),
+        ),
+      )
+    ];
   }
 }

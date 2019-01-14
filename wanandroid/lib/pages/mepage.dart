@@ -19,7 +19,6 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
-
   }
 
   @override
@@ -30,45 +29,35 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    List<int> items = [];
-    for (int i = 0; i < 100; i++) {
-      items.add(i);
-    }
-    return Container(
-      child: ListView.builder(
-        itemBuilder: _buildItem,
-        itemCount: items.length,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("我"),
+      ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            loginLayout(),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildItem(BuildContext context, int index) {
-    if (index == 0) {
-      return Container(
-        color: Colors.blueAccent,
-        width: 200,
-        height: 100,
-      );
-    } else {
-      return Row(
+  Widget loginLayout() {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-            width: 30,
-            height: 30,
-            child: Image.network(
-                "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3239375993,4053990160&fm=27&gp=0.jpg"),
+          TextField(
+            decoration: InputDecoration(
+                icon: Icon(Icons.account_box),
+                hintText: "请输入用户名",
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.only(
+                    left: 0, top: 5, bottom: 5, right: 10)),
           ),
-          Expanded(
-            child: new Column(
-              children: <Widget>[
-                Text("1"),
-                Text("3"),
-              ],
-            ),
-            flex: 1,
-          )
         ],
-      );
-    }
+      ),
+    );
   }
 }

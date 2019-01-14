@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   /// 列表item
   Widget _buildItem(BuildContext context, int index) {
     return Card(
-        margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+        margin: const EdgeInsets.only(top: 0, left: 20, right: 20,bottom: 20),
         child: ListTile(
           contentPadding:
               const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   ///banner
-  Widget buildBannerLayout(BuildContext context, int index) {
+  Widget buildBannerLayout() {
     if (datas.length > 0) {
       return new Container(
         height: 200,
@@ -152,7 +152,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  ///顶部banner和标题栏
+  ///顶部banner和标题
   List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled) {
     return <Widget>[
       SliverAppBar(
@@ -164,12 +164,7 @@ class _HomePageState extends State<HomePage> {
         leading: null,
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: true,
-          background: Swiper(
-            itemCount: 3,
-            itemBuilder: buildBannerLayout,
-            pagination: new SwiperPagination(),
-            autoplay: true,
-          ),
+          background: buildBannerLayout()
         ),
       )
     ];

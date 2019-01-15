@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   BannerItem bannerItem;
-  ArticleList articleList;
+  int currentPage = 0;
   List datas = [];
   List articlLists = [];
   ScrollController _scrollController = ScrollController();
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
     //获取banners
     getBanners();
     //获取首页文章
-    getArticles(0);
+    getArticles(currentPage);
   }
 
   @override
@@ -43,50 +43,63 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
+    return SafeArea(
+        child: Scaffold(
       body: NestedScrollView(
           headerSliverBuilder: _sliverBuilder,
           body: RefreshIndicator(
-              child: ListView.builder(
-                itemBuilder: _buildItem,
-                itemCount: datas.length,
-              ),
-              onRefresh: _onRefresh)),
-    )) ;
+              child: _buildArticleList(), onRefresh: _onRefresh)),
+    ));
   }
 
   /// 列表item
   Widget _buildItem(BuildContext context, int index) {
-    return Card(
-        margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
-        child: ListTile(
-          contentPadding:
-              const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-          title: Text(
-            articlLists[index].title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          subtitle: Text(articlLists[index].author),
-          trailing: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: <Widget>[
-                Text(articlLists[index].chapterName),
-                Text(articlLists[index].niceDate),
-              ],
+    if(index == articlLists.length){
+      return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator(
+                backgroundColor: Colors.blueAccent,
+                valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+              ),
+              Text("加载更多……")
+            ],
+          ));
+    }else{
+      return Card(
+          margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
+          child: ListTile(
+            contentPadding:
+            const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+            title: Text(
+              articlLists[index].title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
-          ),
-          onTap: () {
-            print("点击了第$index");
-          },
-        ));
+            subtitle: Text(articlLists[index].author),
+            trailing: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: <Widget>[
+                  Text(articlLists[index].chapterName),
+                  Text(articlLists[index].niceDate),
+                ],
+              ),
+            ),
+            onTap: () {
+              print("点击了第$index");
+            },
+          ));
+    }
+
   }
 
   /// banner
   Widget _buildBanner(BuildContext context, int index) {
     return Image.network(
-      datas[index].imagePath,//datas[index]["imagePath"]
+      datas[index].imagePath, //datas[index]["imagePath"]
       fit: BoxFit.fill,
     );
   }
@@ -98,7 +111,7 @@ class _HomePageState extends State<HomePage> {
     bannerItem = BannerItem.fromJson(json.decode(response.body));
     setState(() {
 //      datas = json.decode(response.body)["data"];//这种方式不用json序列化，要什么字段直接取
-    datas = bannerItem.data;
+      datas = bannerItem.data;
     });
   }
 
@@ -121,8 +134,8 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     } else {
-      return Container(
-        child: LinearProgressIndicator(
+      return Center(
+        child: CircularProgressIndicator(
           backgroundColor: Colors.blueAccent,
           valueColor: AlwaysStoppedAnimation(Colors.yellow),
         ),
@@ -131,12 +144,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// 获取首页文章
-  void getArticles(int page) async{
+  void getArticles(int page) async {
     String url = "http://www.wanandroid.com/article/list/$page/json";
     http.Response response = await http.get(url);
-    articleList = ArticleList.fromJson(json.decode(response.body));
+    ArticleList articleList = ArticleList.fromJson(json.decode(response.body));
     setState(() {
       articlLists = articleList.data.datas;
+      currentPage ++;
     });
   }
 
@@ -157,12 +171,38 @@ class _HomePageState extends State<HomePage> {
   }
 
   ///加载更多
-  void loadMoreArticles() {}
+  void loadMoreArticles() {
+    print("加载更多");
+    getArticles(currentPage);
+  }
 
   Future<void> _onRefresh() async {
     await Future.sync(() {
       print("下拉刷新");
       getArticles(0);
     });
+  }
+
+  _buildArticleList() {
+    if (articlLists.length > 0) {
+      return ListView.builder(
+        itemBuilder: _buildItem,
+        itemCount: articlLists.length+1,
+        controller: _scrollController,
+      );
+    } else {
+      return Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          CircularProgressIndicator(
+            backgroundColor: Colors.blueAccent,
+            valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+          ),
+          Text("加载中……")
+        ],
+      ));
+    }
   }
 }

@@ -54,6 +54,8 @@ class _HomePageState extends State<HomePage> {
 
   /// 列表item
   Widget _buildItem(BuildContext context, int index) {
+    Datas datas = articlLists[index];
+
     if(index == articlLists.length){
       return Center(
           child: Column(
@@ -74,7 +76,7 @@ class _HomePageState extends State<HomePage> {
             contentPadding:
             const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
             title: Text(
-              articlLists[index].title,
+              datas.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),

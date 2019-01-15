@@ -1,14 +1,11 @@
-import 'dart:ui' as ui;
-
-import 'package:banner/banner.dart';
-import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'dart:io';
 
-import '../data/banneritem.dart';
-import '../data/banner.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:http/http.dart' as http;
+
+import '../data/article_list.dart';
+import '../data/banneritem.dart';
 
 ///主页面
 class HomePage extends StatefulWidget {
@@ -18,15 +15,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   BannerItem bannerItem;
+  ArticleList articleList;
   List datas = [];
+  List articlLists = [];
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        loadMoreArticles();
+      }
+    });
+
     //获取banners
     getBanners();
     //获取首页文章
-    getArticles();
+    getArticles(0);
   }
 
   @override
@@ -36,42 +43,37 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(child: Scaffold(
       body: NestedScrollView(
           headerSliverBuilder: _sliverBuilder,
-          body: ListView.builder(
-            itemBuilder: _buildItem,
-            itemCount: datas.length,
-          )),
-    );
+          body: RefreshIndicator(
+              child: ListView.builder(
+                itemBuilder: _buildItem,
+                itemCount: datas.length,
+              ),
+              onRefresh: _onRefresh)),
+    )) ;
   }
 
   /// 列表item
   Widget _buildItem(BuildContext context, int index) {
     return Card(
-        margin: const EdgeInsets.only(top: 0, left: 20, right: 20,bottom: 20),
+        margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
         child: ListTile(
           contentPadding:
               const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-          leading: FadeInImage.memoryNetwork(
-            placeholder: kTransparentImage,
-            image:
-                'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3239375993,4053990160&fm=27&gp=0.jpg',
-            width: 50,
-            height: 50,
-          ),
           title: Text(
-            datas[index].title,
-            maxLines: 1,
+            articlLists[index].title,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-          subtitle: Text("副标题"),
+          subtitle: Text(articlLists[index].author),
           trailing: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               children: <Widget>[
-                Text("阅读量"),
-                Text("时间"),
+                Text(articlLists[index].chapterName),
+                Text(articlLists[index].niceDate),
               ],
             ),
           ),
@@ -84,29 +86,19 @@ class _HomePageState extends State<HomePage> {
   /// banner
   Widget _buildBanner(BuildContext context, int index) {
     return Image.network(
-      datas[index].imagePath,
+      datas[index].imagePath,//datas[index]["imagePath"]
       fit: BoxFit.fill,
     );
   }
 
   ///获取banner数据
   void getBanners() async {
-    HttpClient client = HttpClient();
-    client
-        .getUrl(Uri.parse("http://www.wanandroid.com/banner/json"))
-        .then((HttpClientRequest request) {
-      return request.close();
-    }).then((HttpClientResponse response) {
-      response.transform(utf8.decoder).listen((contents) {
-        // 拿到json数据
-        Map<String, dynamic> user = json.decode(contents);
-        //json解析
-        bannerItem = BannerItem.fromJson(user);
-        //刷新数据
-        setState(() {
-          datas = bannerItem.data;
-        });
-      });
+    String dataURL = "http://www.wanandroid.com/banner/json";
+    http.Response response = await http.get(dataURL);
+    bannerItem = BannerItem.fromJson(json.decode(response.body));
+    setState(() {
+//      datas = json.decode(response.body)["data"];//这种方式不用json序列化，要什么字段直接取
+    datas = bannerItem.data;
     });
   }
 
@@ -139,16 +131,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// 获取首页文章
-  void getArticles() {
-    HttpClient client = HttpClient();
-    client
-        .getUrl(Uri.parse("http://www.wanandroid.com/article/list/0/json"))
-        .then((HttpClientRequest request) {
-      return request.close();
-    }).then((HttpClientResponse response) {
-      response.transform(utf8.decoder).listen((contents) {
-
-      });
+  void getArticles(int page) async{
+    String url = "http://www.wanandroid.com/article/list/$page/json";
+    http.Response response = await http.get(url);
+    articleList = ArticleList.fromJson(json.decode(response.body));
+    setState(() {
+      articlLists = articleList.data.datas;
     });
   }
 
@@ -160,13 +148,21 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true, //标题居中
         expandedHeight: 200.0, //展开高度200
         floating: false, //不随着滑动隐藏标题
-        pinned: false, //固定在顶部
+        pinned: true, //固定在顶部
         leading: null,
         flexibleSpace: FlexibleSpaceBar(
-          centerTitle: true,
-          background: buildBannerLayout()
-        ),
+            centerTitle: true, background: buildBannerLayout()),
       )
     ];
+  }
+
+  ///加载更多
+  void loadMoreArticles() {}
+
+  Future<void> _onRefresh() async {
+    await Future.sync(() {
+      print("下拉刷新");
+      getArticles(0);
+    });
   }
 }

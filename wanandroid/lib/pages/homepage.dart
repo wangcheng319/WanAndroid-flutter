@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 import '../data/article_list.dart';
 import '../data/banneritem.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 ///主页面
 class HomePage extends StatefulWidget {
@@ -54,7 +55,7 @@ class _HomePageState extends State<HomePage> {
 
   /// 列表item
   Widget _buildItem(BuildContext context, int index) {
-    Datas datas = articlLists[index];
+   
 
     if(index == articlLists.length){
       return Center(
@@ -70,6 +71,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ));
     }else{
+      Datas datas = articlLists[index];
       return Card(
           margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
           child: ListTile(
@@ -80,18 +82,19 @@ class _HomePageState extends State<HomePage> {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
-            subtitle: Text(articlLists[index].author),
+            subtitle: Text(datas.author),
             trailing: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: <Widget>[
-                  Text(articlLists[index].chapterName),
-                  Text(articlLists[index].niceDate),
+                  Text(datas.chapterName),
+                  Text(datas.niceDate),
                 ],
               ),
             ),
             onTap: () {
-              print("点击了第$index");
+              print(datas.link);
+              jumpToWebView(datas.link);
             },
           ));
     }
@@ -119,7 +122,8 @@ class _HomePageState extends State<HomePage> {
 
   ///点击banner
   void clickBanner(int index) {
-    print(datas[index].title);
+    print(datas[index].url);
+    jumpToWebView(datas[index].url);
   }
 
   ///banner
@@ -150,8 +154,11 @@ class _HomePageState extends State<HomePage> {
     String url = "http://www.wanandroid.com/article/list/$page/json";
     http.Response response = await http.get(url);
     ArticleList articleList = ArticleList.fromJson(json.decode(response.body));
+    if(page == 0){
+      articlLists.clear();
+    }
     setState(() {
-      articlLists = articleList.data.datas;
+      articlLists.addAll(articleList.data.datas);
       currentPage ++;
     });
   }
@@ -206,5 +213,13 @@ class _HomePageState extends State<HomePage> {
         ],
       ));
     }
+  }
+
+  ///跳转到webview
+  void jumpToWebView(url) {
+    Navigator.push(context, new MaterialPageRoute(builder: (context) {
+      return WebviewScaffold(url: url);
+    }));
+
   }
 }

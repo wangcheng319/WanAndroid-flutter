@@ -8,8 +8,8 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User extends Object {
-  final String name;
-  final int age;
+   String name;
+   int age;
 
   User({this.name,this.age});
 

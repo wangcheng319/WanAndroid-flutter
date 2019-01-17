@@ -30,6 +30,7 @@ dependencies:
   encrypt: ^1.0.0+1
   flutter_string_encryption: ^0.2.0
   pointycastle: ^1.0.0
+  crypto_keys: ^0.1.0
 
 dev_dependencies:
   flutter_test:

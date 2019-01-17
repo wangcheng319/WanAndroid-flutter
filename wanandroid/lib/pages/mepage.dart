@@ -1,17 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:flutter/material.dart';
-import '../data/user.dart';
-import '../data/banneritem.dart';
-import '../data/banner.dart';
-import 'package:http/http.dart' as http;
-import 'package:async/async.dart';
-import '../data/login_request.dart';
-import 'package:encrypt/encrypt.dart';
-import 'package:flutter_string_encryption/flutter_string_encryption.dart';
-import 'package:pointycastle/pointycastle.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import '../data/login_request.dart';
 
 ///我
 class MePage extends StatefulWidget {
@@ -32,6 +25,20 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+
+  static const platform = const MethodChannel("samples.flutter.io/test");
+
+  Future<Null> _getNativeArguments() async {
+    Map<String, String> map = { "flutter": "这是一条来自flutter的参数" };
+    try {
+      //在通道上调用此方法，获取原生传递参数
+      final String result = await platform.invokeMethod("getNativeArguments",map);
+      print("原生返回："+result);
+    } on PlatformException catch (e) {
+
+    }
   }
 
   @override
@@ -65,6 +72,8 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
           ),
 
           RaisedButton(onPressed: _login),
+
+          RaisedButton(onPressed: _getNativeArguments),
         ],
       ),
     );
@@ -83,8 +92,8 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
 
 
     LoginRequest loginRequest = LoginRequest();
-    loginRequest.phone = "15659926163";
-    loginRequest.password = "222222";
+    loginRequest.phone = "18521038608";
+    loginRequest.password = "123456";
     loginRequest.systemVersion = "Android-8.1.0";
     loginRequest.location = "0.00";
     loginRequest.networkType = "123";
@@ -98,25 +107,19 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
     final requests = json.encode(loginRequest);
 
 
-    final iv = 'HmacSHA1';
-
-
-    final encryptor = Encrypter(Salsa20(key, iv));
-    String base64Text = base64.encode(utf8.encode(requests));
-    String encText  = encryptor.encrypt(base64Text);
-
-
-    http.Response response = await http.post(dataURL,headers: headers,body: encText);
-    var result = json.decode(response.body);
-    print(result);
-
-//    final cryptor = new PlatformStringCryptor();
-//    String encrypted = await cryptor.encrypt("111", key);
-
-//    Dio dio = Dio();
-//    dio.options.headers = headers;
-//    dio.options.baseUrl = "http://api.vico.xin";
-//    Response  resopnse = await dio.post("/client/custom/login",data: encryptor.encrypt(requests));
-//    print(resopnse.data);
+    Dio dio = Dio();
+    dio.options.headers = headers;
+    dio.options.baseUrl = "http://api.vico.xin";
+    FormData formData = new FormData.from({
+      "json": "51f6b1790743753029b296b160f45b929855b2839524dd3beb1cfa31777d2c10f4b7"
+          "f3184ed8ea759da300ef439680b08bb2803f5160edb04a1ddec48696cb9b73ed67cf6fa29"
+          "8a3d75ffb7d2c429d07adc0a5f0f6b3a02109a1aac3bf491b4dfb5b2e83d5a536dc409c140"
+          "b14c2784309c1ba45bd0be066a03ab348655edaf1a5a95a3e54a16fe08be4e2bbc8ee071f79"
+          "c4e464522241f1f109f85484d6e5de5bd986570810d4c15edd2942c3942faa179c62d5523f6"
+          "1efaaa7c741bae5530e336ec9b07266a1c0be16a281824ee19d6cb4424c145bd039365e"
+          "f3a5bc0aeb388901f57240e4b07220a2093ecce4e539",
+    });
+    Response  resopnse = await dio.post("/client/custom/login",data: formData);
+    print(resopnse.data);
   }
 }

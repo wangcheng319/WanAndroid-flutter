@@ -1,8 +1,13 @@
+import 'dart:_http';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'homepage.dart';
+import 'package:wanandroid/main.dart';
 
 import '../data/login_request.dart';
 
@@ -19,6 +24,7 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
+    print("4创建");
   }
 
   @override
@@ -31,7 +37,8 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
   static const platform = const MethodChannel("samples.flutter.io/test");
 
   Future<Null> _getNativeArguments() async {
-    Map<String, String> map = { "flutter": "这是一条来自flutter的参数" };
+
+    Map<String, String> map = { "flutter": "这是来自flutter的参数"};
     try {
       //在通道上调用此方法，获取原生传递参数
       final String result = await platform.invokeMethod("getNativeArguments",map);
@@ -110,6 +117,7 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
     Dio dio = Dio();
     dio.options.headers = headers;
     dio.options.baseUrl = "http://api.vico.xin";
+
     FormData formData = new FormData.from({
       "json": "51f6b1790743753029b296b160f45b929855b2839524dd3beb1cfa31777d2c10f4b7"
           "f3184ed8ea759da300ef439680b08bb2803f5160edb04a1ddec48696cb9b73ed67cf6fa29"
@@ -120,6 +128,8 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
           "f3a5bc0aeb388901f57240e4b07220a2093ecce4e539",
     });
     Response  resopnse = await dio.post("/client/custom/login",data: formData);
+    print(resopnse.headers);
     print(resopnse.data);
+
   }
 }

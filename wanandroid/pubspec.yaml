@@ -28,7 +28,6 @@ dependencies:
   flutter_webview_plugin: ^0.3.0+2
   #加密
   encrypt: ^1.0.0+1
-  flutter_string_encryption: ^0.2.0
   pointycastle: ^1.0.0
   crypto_keys: ^0.1.0
 

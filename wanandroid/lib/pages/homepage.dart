@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   BannerItem bannerItem;
   int currentPage = 0;
   List datas = [];
@@ -35,6 +35,8 @@ class _HomePageState extends State<HomePage> {
     getBanners();
     //获取首页文章
     getArticles(currentPage);
+
+    print("1创建");
   }
 
   @override
@@ -222,4 +224,8 @@ class _HomePageState extends State<HomePage> {
     }));
 
   }
+
+  ///设置为true，页面切换会保存状态
+  @override
+  bool get wantKeepAlive => true;
 }

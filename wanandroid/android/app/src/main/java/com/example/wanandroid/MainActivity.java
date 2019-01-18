@@ -1,11 +1,8 @@
 package com.example.wanandroid;
 
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
@@ -30,8 +27,9 @@ public class MainActivity extends FlutterActivity {
                             startActivity(new Intent(MainActivity.this, SecondActivity.class));
                             //获取flutter传递过来的参数
                             String text = methodCall.argument("flutter");
+
                             //返回flutter，并且携带参数
-                            result.success(text + "007");
+                            result.success(text+"");
                         } else {
                             result.notImplemented();
                         }

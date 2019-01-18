@@ -8,13 +8,14 @@ class ProjectPage extends StatefulWidget {
 }
 
 class _ProjectPageState extends State<ProjectPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   AnimationController _controller;
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
+    print("2创建");
   }
 
   @override
@@ -74,4 +75,7 @@ class _ProjectPageState extends State<ProjectPage>
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

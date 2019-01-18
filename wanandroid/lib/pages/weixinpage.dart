@@ -12,6 +12,7 @@ class _WxPageState extends State<WxPage> with SingleTickerProviderStateMixin {
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
+    print("3创建");
   }
 
   @override

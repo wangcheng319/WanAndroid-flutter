@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../data/login_request.dart';
 import 'weixinpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 ///我
 class MePage extends StatefulWidget {
@@ -103,9 +105,11 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
     );
   }
 
+  Map<String, String> headers;
+  Dio dio;
   void _login(String result) async{
 
-    Map<String, String> headers = Map<String, String>();
+    headers = Map<String, String>();
     headers["CL-app"] = "CLAC";
     headers["CL-app-v"] = "3.0.0";
     headers["CL-app-m"] = "Prod";
@@ -113,7 +117,7 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
     headers["appKey"] = "";
     headers["source"] = "tyhj";
 
-    Dio dio = Dio();
+    dio = Dio();
     dio.options.headers = headers;
     dio.options.baseUrl = "http://api.vico.xin";
 
@@ -121,7 +125,30 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
       "json":result
     });
     Response  resopnse = await dio.post("/client/custom/login",data: formData);
-    print(resopnse.headers);
+    //获取cookie
+    print(resopnse.headers["set-cookie"]);
     print(resopnse.data);
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('cookie', resopnse.headers["set-cookie"].first);
+
+    ///  CMCL_SESSION=9bafe107c528d76fe3a57a176d5a16175548aea8-uid=5147449e-88d9-4261-9641-a87cea67f42a&sid=1a3482a94539d2037df34ae165c4f015318a4461d05ca8fbb7ab374a36b9d53f;
+
+    getBorrot();
+  }
+
+  void getBorrot() async {
+    String url = '/client/custom/borrow/get';
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String cookie = preferences.get('cookie');
+    print(cookie);
+    print(cookie.split(";")[0]);
+
+    headers["Set-Cookie"] =cookie.split(";")[0];
+    dio.options.headers = headers;
+
+    Response  resopnse = await dio.get(url);
+    print(resopnse);
   }
 }

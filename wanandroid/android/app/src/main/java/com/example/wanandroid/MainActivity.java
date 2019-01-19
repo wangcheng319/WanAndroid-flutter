@@ -53,7 +53,6 @@ public class MainActivity extends FlutterActivity {
         );
     }
 
-
     public static String AESEncode(String text,String privateKey){
         try {
             byte[] raw = privateKey.getBytes("UTF-8");

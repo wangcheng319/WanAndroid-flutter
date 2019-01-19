@@ -1,8 +1,23 @@
 package com.example.wanandroid;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
+
+import com.example.wanandroid.aes.Codec2;
+
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
@@ -24,18 +39,30 @@ public class MainActivity extends FlutterActivity {
                     public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
 //                通过methodCall可以获取参数和方法名  执行对应的平台业务逻辑即可
                         if (methodCall.method.equals("getNativeArguments")) {
-                            startActivity(new Intent(MainActivity.this, SecondActivity.class));
                             //获取flutter传递过来的参数
                             String text = methodCall.argument("flutter");
-
-                            //返回flutter，并且携带参数
-                            result.success(text+"");
+                            //AES加密
+                            String key = "fsgjernfjwnfjeft";
+                            String encrypt = AESEncode(text,key);
+                            result.success(encrypt);
                         } else {
                             result.notImplemented();
                         }
                     }
                 }
         );
+    }
 
+
+    public static String AESEncode(String text,String privateKey){
+        try {
+            byte[] raw = privateKey.getBytes("UTF-8");
+            SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+            return Codec2.byteToHexString(cipher.doFinal(text.getBytes("UTF-8")));
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

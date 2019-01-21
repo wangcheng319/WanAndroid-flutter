@@ -18,21 +18,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page', indexTo: 0),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title, this.indexTo}) : super(key: key);
+  MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
   //用于标记从其他页面返回后需要跳转到第几个tab页
-  int indexTo;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState(indexTo: indexTo);
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -55,17 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   PageController _pageController;
 
-  _MyHomePageState({this.indexTo});
 
-  int indexTo = 0;
 
   @override
   void initState() {
     super.initState();
 
-    setState(() {
-      _currentIndex = indexTo;
-    });
     _pageController = PageController(initialPage: _currentIndex);
   }
 

@@ -22,7 +22,9 @@ import javax.crypto.spec.SecretKeySpec;
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugins.GeneratedPluginRegistrant;
+import io.flutter.plugins.ViewPluginRefistrant;
 
 public class MainActivity extends FlutterActivity {
 
@@ -32,6 +34,7 @@ public class MainActivity extends FlutterActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
+        ViewPluginRefistrant.registerWith(this,new MyView(this));
 
         new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(
                 new MethodChannel.MethodCallHandler() {
@@ -51,6 +54,7 @@ public class MainActivity extends FlutterActivity {
                     }
                 }
         );
+
     }
 
     public static String AESEncode(String text,String privateKey){

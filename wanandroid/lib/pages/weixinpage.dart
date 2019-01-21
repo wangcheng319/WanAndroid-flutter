@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'mepage.dart';
+import 'dart:ui';
 
 class WxPage extends StatefulWidget {
   String a;
@@ -11,17 +12,13 @@ class WxPage extends StatefulWidget {
 class _WxPageState extends State<WxPage> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   String b;
+  double width = 50;
 
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
     super.initState();
     print("3创建");
-    Navigator.push<String>(
-            context, new MaterialPageRoute(builder: (BuildContext context) {}))
-        .then((String result) {
-      //处理代码
-    });
   }
 
   @override
@@ -32,8 +29,74 @@ class _WxPageState extends State<WxPage> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("公众号"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("View"),
+      ),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            FlatButton(
+              onPressed: _add,
+              child: Text("加"),
+              textColor: Colors.white,
+              color: Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+            ),
+            FlatButton(
+              onPressed: _reduce,
+              child: Text("减"),
+              textColor: Colors.white,
+              color: Colors.blue,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+            ),
+            Container(
+              child: AndroidView(viewType: "nativeview"),
+              width: 200,
+              height: 200,
+            ),
+            CustomPaint(
+              painter: MyView(width: width),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  _add() {
+    setState(() {
+      width = width + 20;
+    });
+  }
+
+  _reduce() {
+    setState(() {
+      width = width - 20;
+    });
+  }
+}
+
+class MyView extends CustomPainter {
+  MyView({this.width});
+
+  final double width;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint();
+    paint.color = Colors.red;
+    paint.strokeWidth = 3;
+    paint.style = PaintingStyle.stroke;
+    canvas.drawCircle(Offset(0, 0), width, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }

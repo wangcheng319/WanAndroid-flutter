@@ -36,5 +36,7 @@ public class MyView extends View {
         paint.setColor(Color.RED);
         paint.setStrokeWidth(30);
         canvas.drawText("这是原生view",50,50,paint);
+
+        canvas.drawCircle(250,50,50,paint);
     }
 }

@@ -55,7 +55,7 @@ class _WxPageState extends State<WxPage> with SingleTickerProviderStateMixin {
                   borderRadius: BorderRadius.circular(20.0)),
             ),
             Container(
-              child: AndroidView(viewType: "nativeview"),
+              child: AndroidView(viewType: "nativeview"),//利用AndroidView引入原生Android控件
               width: 200,
               height: 200,
             ),

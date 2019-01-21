@@ -18,7 +18,6 @@ import io.flutter.plugin.platform.PlatformViewFactory;
  */
 public class NativeViewFactory extends PlatformViewFactory {
 
-
     private MyView myView;
 
     public NativeViewFactory(MessageCodec<Object> createArgsCodec,MyView myView) {

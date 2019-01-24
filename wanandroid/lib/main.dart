@@ -10,7 +10,10 @@ import 'dart:convert';
 
 void main() => runApp(MyApp());
 
+
+
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
   //用于标记从其他页面返回后需要跳转到第几个tab页
-
+  static const int Main = 333;
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }

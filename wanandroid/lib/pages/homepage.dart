@@ -176,7 +176,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
         pinned: true, //固定在顶部
         leading: null,
         flexibleSpace: FlexibleSpaceBar(
+          collapseMode: CollapseMode.none,
             centerTitle: true, background: buildBannerLayout()),
+
       )
     ];
   }

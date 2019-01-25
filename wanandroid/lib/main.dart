@@ -4,6 +4,7 @@ import 'pages/homepage.dart';
 import 'pages/mepage.dart';
 import 'pages/projectpage.dart';
 import 'pages/weixinpage.dart';
+import 'pages/tyhj.dart';
 
 import 'data/user.dart';
 import 'dart:convert';
@@ -52,7 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
     HomePage(),
     ProjectPage(),
     WxPage(),
-    MePage(),
+//    MePage(),
+  TyhjHomePage(),
   ];
 
   PageController _pageController;

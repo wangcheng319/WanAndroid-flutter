@@ -11,10 +11,12 @@ import 'dart:convert';
 
 void main() => runApp(MyApp());
 
-
+/**
+ *
+ * branch wangc
+ */
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,12 +56,10 @@ class _MyHomePageState extends State<MyHomePage> {
     ProjectPage(),
     WxPage(),
 //    MePage(),
-  TyhjHomePage(),
+    TyhjHomePage(),
   ];
 
   PageController _pageController;
-
-
 
   @override
   void initState() {

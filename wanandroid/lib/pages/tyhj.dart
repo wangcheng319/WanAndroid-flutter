@@ -7,7 +7,7 @@ class TyhjHomePage extends StatefulWidget {
 }
 
 class _TyhjHomePageState extends State<TyhjHomePage> {
-  var products = [1,2,3,4,5,6,7,8,9,10];
+  var products = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   ScrollController _scrollController = ScrollController();
   var title = "";
 
@@ -17,11 +17,11 @@ class _TyhjHomePageState extends State<TyhjHomePage> {
     super.initState();
     _scrollController.addListener(() {
       print(_scrollController.position.pixels);
-      if (_scrollController.position.pixels == 0 ) {
+      if (_scrollController.position.pixels == 0) {
         setState(() {
           title = "";
         });
-      }else{
+      } else {
         setState(() {
           title = "首页";
         });
@@ -31,7 +31,7 @@ class _TyhjHomePageState extends State<TyhjHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: CustomScrollView(
         controller: _scrollController,
         physics: ScrollPhysics(),
@@ -45,7 +45,8 @@ class _TyhjHomePageState extends State<TyhjHomePage> {
             leading: null,
             flexibleSpace: FlexibleSpaceBar(
                 collapseMode: CollapseMode.none,
-                centerTitle: true, background: buildBannerLayout()),
+                centerTitle: true,
+                background: buildBannerLayout()),
           ),
           SliverToBoxAdapter(
             child: _buildSearch(),
@@ -59,7 +60,7 @@ class _TyhjHomePageState extends State<TyhjHomePage> {
             ),
           ),
           SliverToBoxAdapter(
-            child:  _buildFooter(),
+            child: _buildFooter(),
           ),
         ],
       ),
@@ -71,12 +72,11 @@ class _TyhjHomePageState extends State<TyhjHomePage> {
       child: Text("NO."),
       textColor: Colors.white,
       color: Colors.blue,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
     );
   }
 
-  Widget _buildSearch(){
+  Widget _buildSearch() {
     return Container(
       height: 100,
       color: Colors.red,
@@ -84,7 +84,7 @@ class _TyhjHomePageState extends State<TyhjHomePage> {
     );
   }
 
-  Widget _buildFooter(){
+  Widget _buildFooter() {
     return Container(
       height: 100,
       color: Colors.red,

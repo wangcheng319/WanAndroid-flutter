@@ -1,15 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../data/login_request.dart';
-import 'weixinpage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 ///我
 class MePage extends StatefulWidget {
@@ -33,11 +30,9 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-
   static const platform = const MethodChannel("samples.flutter.io/test");
 
   Future<Null> _getNativeArguments() async {
-
     LoginRequest loginRequest = LoginRequest();
     loginRequest.phone = "15659926163";
     loginRequest.password = "222222";
@@ -53,17 +48,15 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
     final requests = json.encode(loginRequest);
     print(requests.toString());
 
-    Map<String, String> map = { "flutter": requests};
+    Map<String, String> map = {"flutter": requests};
     try {
       //在通道上调用此方法，获取原生传递参数
-      final String result = await platform.invokeMethod("getNativeArguments",map);
-      print("原生返回："+result);
+      final String result =
+          await platform.invokeMethod("getNativeArguments", map);
+      print("原生返回：" + result);
 
       _login(result);
-
-    } on PlatformException catch (e) {
-
-    }
+    } on PlatformException catch (e) {}
   }
 
   @override
@@ -106,8 +99,7 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
 
   Map<String, String> headers;
   Dio dio;
-  void _login(String result) async{
-
+  void _login(String result) async {
     headers = Map<String, String>();
     headers["CL-app"] = "CLAC";
     headers["CL-app-v"] = "3.0.0";
@@ -120,10 +112,8 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
     dio.options.headers = headers;
     dio.options.baseUrl = "http://api.vico.xin";
 
-    FormData formData = new FormData.from({
-      "json":result
-    });
-    Response  resopnse = await dio.post("/client/custom/login",data: formData);
+    FormData formData = new FormData.from({"json": result});
+    Response resopnse = await dio.post("/client/custom/login", data: formData);
     //获取cookie
     print(resopnse.headers["set-cookie"]);
     print(resopnse.data);
@@ -144,10 +134,10 @@ class _MePageState extends State<MePage> with SingleTickerProviderStateMixin {
     print(cookie);
     print(cookie.split(";")[0]);
 
-    headers["Set-Cookie"] =cookie.split(";")[0];
+    headers["Set-Cookie"] = cookie.split(";")[0];
     dio.options.headers = headers;
 
-    Response  resopnse = await dio.get(url);
+    Response resopnse = await dio.get(url);
     print(resopnse);
   }
 }

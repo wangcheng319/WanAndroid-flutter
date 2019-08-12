@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
-import 'dart:io';
+import 'package:wanandroid/pages/list_details_page.dart';
 
 class ProjectPage extends StatefulWidget {
   @override
   _ProjectPageState createState() => _ProjectPageState();
 }
 
-class _ProjectPageState extends State<ProjectPage>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _ProjectPageState extends State<ProjectPage> {
   AnimationController _controller;
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this);
+//    _controller = AnimationController(vsync: this);
     super.initState();
     print("2创建");
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+//    _controller.dispose();
+    print("dispose");
     super.dispose();
   }
 
@@ -29,24 +28,31 @@ class _ProjectPageState extends State<ProjectPage>
     return Scaffold(
       appBar: AppBar(
         title: Text("项目"),
+        centerTitle: true,
       ),
-      body: Stack(
+      body: Column(
         children: <Widget>[
-          Container(
-            height: 200,
-            child: new Swiper(
-              itemCount: 3,
-              itemBuilder: _buildBanner,
-              pagination: new SwiperPagination(),
-              autoplay: true,
-            ),
+          RaisedButton(
+            child: Text("命名路由-跳转"),
+            onPressed: () {
+              //命名路由跳转，不能传参,但可以接受返回的参数
+//              Navigator.pushNamed(context, "/list_details").then((value) {
+//                //获取返回的参数
+//                print(value);
+//              });
+            },
           ),
-          Container(
-            child: new ListView.builder(
-              itemBuilder: _buildItem,
-              itemCount: 10,
-            ),
-            margin: const EdgeInsets.only(top: 200),
+          RaisedButton(
+            child: Text("构建路由-跳转"),
+            onPressed: () {
+              //构建路由，可以传参，可接受返回数据
+              Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) {
+                return new ListDetailsPage(title: "参数1");
+              })).then((value) {
+                //获取返回的参数
+                print(value);
+              });
+            },
           )
         ],
       ),

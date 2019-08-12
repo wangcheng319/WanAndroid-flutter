@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:wanandroid/pages/list_details_page.dart';
+import 'package:wanandroid/pages/projectpage.dart';
 
 import 'pages/homepage.dart';
-import 'pages/mepage.dart';
-import 'pages/projectpage.dart';
-import 'pages/weixinpage.dart';
 import 'pages/tyhj.dart';
-
-import 'data/user.dart';
-import 'dart:convert';
+import 'pages/weixinpage.dart';
 
 void main() => runApp(MyApp());
 
 //branch -feature111
-
 
 class MyApp extends StatelessWidget {
   @override
@@ -23,6 +19,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: <String, WidgetBuilder>{
+        //1
+        '/list_details': (BuildContext context) => ListDetailsPage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }

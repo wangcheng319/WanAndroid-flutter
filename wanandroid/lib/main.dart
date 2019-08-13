@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wanandroid/pages/future_builder_page.dart';
 import 'package:wanandroid/pages/list_details_page.dart';
 import 'package:wanandroid/pages/projectpage.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         //1
         '/list_details': (BuildContext context) => ListDetailsPage(),
+        '/future_builder_page': (BuildContext context) => FutureBuilderPage(),
       },
       debugShowCheckedModeBanner: false,
     );
@@ -74,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: _contents,
         onPageChanged: _onPageChanged,
         controller: _pageController,
+//        physics: NeverScrollableScrollPhysics(),//可禁止PageView滑动
       )),
       bottomNavigationBar: BottomNavigationBar(
         items: _items,

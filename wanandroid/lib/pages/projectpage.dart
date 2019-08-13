@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:wanandroid/pages/list_details_page.dart';
 
@@ -8,6 +10,7 @@ class ProjectPage extends StatefulWidget {
 
 class _ProjectPageState extends State<ProjectPage> {
   AnimationController _controller;
+  Timer _countdownTimer;
 
   @override
   void initState() {
@@ -19,6 +22,8 @@ class _ProjectPageState extends State<ProjectPage> {
   @override
   void dispose() {
 //    _controller.dispose();
+    _countdownTimer.cancel();
+    _countdownTimer = null;
     print("dispose");
     super.dispose();
   }
@@ -36,10 +41,10 @@ class _ProjectPageState extends State<ProjectPage> {
             child: Text("命名路由-跳转"),
             onPressed: () {
               //命名路由跳转，不能传参,但可以接受返回的参数
-//              Navigator.pushNamed(context, "/list_details").then((value) {
-//                //获取返回的参数
-//                print(value);
-//              });
+              Navigator.pushNamed(context, "/list_details").then((value) {
+                //获取返回的参数
+                print(value);
+              });
             },
           ),
           RaisedButton(
@@ -53,10 +58,35 @@ class _ProjectPageState extends State<ProjectPage> {
                 print(value);
               });
             },
-          )
+          ),
+          RaisedButton(
+            child: Text("FutureBuilder"),
+            onPressed: () {
+              Navigator.pushNamed(context, '/future_builder_page');
+            },
+          ),
+          RaisedButton(
+            child: Text("倒计时Timer"),
+            onPressed: () {
+              _countdown();
+            },
+          ),
         ],
       ),
     );
+  }
+
+  //倒计时
+  void _countdown() {
+    _countdownTimer = new Timer.periodic(new Duration(seconds: 1), (timer) {
+      int time = 10 - timer.tick;
+      if (time > 0) {
+        print(time);
+      } else {
+        _countdownTimer.cancel();
+        print('重新开始');
+      }
+    });
   }
 
   Widget _buildBanner(BuildContext context, int index) {

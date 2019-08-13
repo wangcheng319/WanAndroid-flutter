@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
 
 import '../data/article_list.dart';
 import '../data/banneritem.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 ///主页面
 class HomePage extends StatefulWidget {
@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   BannerItem bannerItem;
   int currentPage = 0;
   List datas = [];
@@ -25,8 +25,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         loadMoreArticles();
       }
     });
@@ -50,57 +49,63 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
         child: Scaffold(
       body: NestedScrollView(
           headerSliverBuilder: _sliverBuilder,
-          body: RefreshIndicator(
-              child: _buildArticleList(), onRefresh: _onRefresh)),
+          body: RefreshIndicator(child: _buildArticleList(), onRefresh: _onRefresh)),
     ));
   }
 
   /// 列表item
   Widget _buildItem(BuildContext context, int index) {
-   
-
-    if(index == articlLists.length){
+    if (index == articlLists.length) {
       return Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              CircularProgressIndicator(
-                backgroundColor: Colors.blueAccent,
-                valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
-              ),
-              Text("加载更多……")
-            ],
-          ));
-    }else{
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          CircularProgressIndicator(
+            backgroundColor: Colors.blueAccent,
+            valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+          ),
+          Text("加载更多……")
+        ],
+      ));
+    } else {
       Datas datas = articlLists[index];
-      return Card(
-          margin: const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
-          child: ListTile(
-            contentPadding:
-            const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-            title: Text(
-              datas.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            subtitle: Text(datas.author),
-            trailing: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: <Widget>[
-                  Text(datas.chapterName),
-                  Text(datas.niceDate),
-                ],
+      //滑动删除widget
+      return Dismissible(
+        key: Key(datas.title),
+        onDismissed: (direction) {
+          setState(() {
+            articlLists.removeAt(index);
+          });
+        },
+        child: Card(
+            margin: const EdgeInsets.all(10),
+            child: ListTile(
+              contentPadding: const EdgeInsets.all(10),
+              title: Text(
+                datas.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
-            onTap: () {
-              print(datas.link);
-              jumpToWebView(datas.link);
-            },
-          ));
+              subtitle: Text(datas.author),
+              trailing: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(1),
+                  child: Column(
+                    children: <Widget>[
+                      Text(datas.chapterName),
+//                      Text(datas.niceDate),
+                    ],
+                  ),
+                ),
+              ),
+              onTap: () {
+                print(datas.link);
+                jumpToWebView(datas.link);
+              },
+            )),
+      );
     }
-
   }
 
   /// banner
@@ -131,12 +136,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   ///banner
   Widget buildBannerLayout() {
     if (datas.length > 0) {
-      return new Container(
+      return Container(
         height: 200,
         child: Swiper(
           itemCount: datas.length,
           itemBuilder: _buildBanner,
-          pagination: new SwiperPagination(),
+          pagination: SwiperPagination(),
           autoplay: true,
           onTap: clickBanner,
         ),
@@ -156,12 +161,12 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
     String url = "http://www.wanandroid.com/article/list/$page/json";
     http.Response response = await http.get(url);
     ArticleList articleList = ArticleList.fromJson(json.decode(response.body));
-    if(page == 0){
+    if (page == 0) {
       articlLists.clear();
     }
     setState(() {
       articlLists.addAll(articleList.data.datas);
-      currentPage ++;
+      currentPage++;
     });
   }
 
@@ -176,9 +181,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
         pinned: true, //固定在顶部
         leading: null,
         flexibleSpace: FlexibleSpaceBar(
-          collapseMode: CollapseMode.none,
-            centerTitle: true, background: buildBannerLayout()),
-
+            collapseMode: CollapseMode.none, centerTitle: true, background: buildBannerLayout()),
       )
     ];
   }
@@ -200,7 +203,7 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
     if (articlLists.length > 0) {
       return ListView.builder(
         itemBuilder: _buildItem,
-        itemCount: articlLists.length+1,
+        itemCount: articlLists.length + 1,
         controller: _scrollController,
       );
     } else {
@@ -224,7 +227,6 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
     Navigator.push(context, new MaterialPageRoute(builder: (context) {
       return WebviewScaffold(url: url);
     }));
-
   }
 
   ///设置为true，页面切换会保存状态

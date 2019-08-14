@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:wanandroid/pages/align_page.dart';
+import 'package:wanandroid/pages/animate_page.dart';
 import 'package:wanandroid/pages/future_builder_page.dart';
 import 'package:wanandroid/pages/list_details_page.dart';
 import 'package:wanandroid/pages/projectpage.dart';
+import 'package:wanandroid/pages/stack_positioned_page.dart';
 
 import 'pages/homepage.dart';
 import 'pages/tyhj.dart';
@@ -24,6 +27,9 @@ class MyApp extends StatelessWidget {
         //1
         '/list_details': (BuildContext context) => ListDetailsPage(),
         '/future_builder_page': (BuildContext context) => FutureBuilderPage(),
+        '/align_page': (BuildContext context) => AlignDemoPage(),
+        '/animate_page': (BuildContext context) => AnimateDemoPage(),
+        '/stack_positioned_page': (BuildContext context) => StackPositionedPage()
       },
       debugShowCheckedModeBanner: false,
     );

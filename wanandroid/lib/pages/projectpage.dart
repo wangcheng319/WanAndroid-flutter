@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:wanandroid/main.dart';
+import 'package:wanandroid/models/user.dart';
+import 'package:wanandroid/pages/event_bus_page.dart';
 import 'package:wanandroid/pages/list_details_page.dart';
 
 class ProjectPage extends StatefulWidget {
@@ -99,6 +102,15 @@ class _ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin
             RaisedButton(
                 child: Text("Stack,Positioned"),
                 onPressed: () {
+                  Navigator.of(context).pushNamed('/stack_positioned_page');
+                }),
+            RaisedButton(
+                child: Text("EventBus"),
+                onPressed: () {
+                  User user = new User();
+                  user.name = "张三";
+                  user.age = 3;
+                  eventBus.fire(new UserLoggedInEvent(user));
                   Navigator.of(context).pushNamed('/stack_positioned_page');
                 }),
             Container(

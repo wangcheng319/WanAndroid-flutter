@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wanandroid/main.dart';
+import 'package:wanandroid/pages/event_bus_page.dart';
 
 class StackPositionedPage extends StatefulWidget {
   @override
@@ -7,6 +9,16 @@ class StackPositionedPage extends StatefulWidget {
 
 ///Stack类似Android中的FrameLayout,Positioned则根据Stack来定位
 class _StackPositionedPageState extends State<StackPositionedPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("==================");
+    eventBus.on<UserLoggedInEvent>().listen((event) {
+      print(event.user.name);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

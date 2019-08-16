@@ -1,3 +1,4 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:wanandroid/pages/align_page.dart';
 import 'package:wanandroid/pages/animate_page.dart';
@@ -15,6 +16,8 @@ import 'pages/weixinpage.dart';
 void main() => runApp(MyApp());
 
 //branch -feature111
+
+EventBus eventBus = EventBus();
 
 class MyApp extends StatelessWidget {
   @override

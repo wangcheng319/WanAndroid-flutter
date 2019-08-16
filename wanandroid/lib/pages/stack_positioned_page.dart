@@ -15,8 +15,14 @@ class _StackPositionedPageState extends State<StackPositionedPage> {
     super.initState();
     print("==================");
     eventBus.on<UserLoggedInEvent>().listen((event) {
-      print(event.user.name);
+      print("接收事件：" + event.user.name);
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override

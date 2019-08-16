@@ -111,6 +111,7 @@ class _ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin
                   user.name = "张三";
                   user.age = 3;
                   eventBus.fire(new UserLoggedInEvent(user));
+                  print("发送");
                   Navigator.of(context).pushNamed('/stack_positioned_page');
                 }),
             Container(

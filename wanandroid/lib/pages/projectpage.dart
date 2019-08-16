@@ -75,35 +75,7 @@ class _ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin
             RaisedButton(
               child: Text("AlertDialog"),
               onPressed: () {
-                showDialog(
-                    context: context,
-                    barrierDismissible: false, //点击影印不能取消
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text("标题"),
-                        content: Text("这里放置内容文本"),
-                        actions: <Widget>[
-                          RaisedButton(
-                            child: Text("Ok", style: TextStyle(color: Colors.white)),
-                            onPressed: () {
-                              print("ok");
-                            },
-                          ),
-                          RaisedButton(
-                            child: Text("Cancle", style: TextStyle(color: Colors.white)),
-                            onPressed: () {
-                              print("cancle");
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                        shape: BorderDirectional(
-                            start: BorderSide(color: Colors.blue, width: 2.0),
-                            end: BorderSide(color: Colors.blue, width: 2.0),
-                            top: BorderSide(color: Colors.blue, width: 2.0),
-                            bottom: BorderSide(color: Colors.blue, width: 2.0)),
-                      );
-                    });
+                Navigator.of(context).pushNamed("/dialog_page");
               },
             ),
             RaisedButton(
@@ -117,6 +89,12 @@ class _ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin
               onPressed: () {
                 Navigator.of(context).pushNamed("/animate_page");
               },
+            ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/event_page');
+              },
+              child: Text("事件"),
             ),
             RaisedButton(
                 child: Text("Stack,Positioned"),

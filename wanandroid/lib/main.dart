@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wanandroid/pages/align_page.dart';
 import 'package:wanandroid/pages/animate_page.dart';
+import 'package:wanandroid/pages/dialog_page.dart';
+import 'package:wanandroid/pages/event_page.dart';
 import 'package:wanandroid/pages/future_builder_page.dart';
 import 'package:wanandroid/pages/list_details_page.dart';
 import 'package:wanandroid/pages/projectpage.dart';
@@ -29,7 +31,9 @@ class MyApp extends StatelessWidget {
         '/future_builder_page': (BuildContext context) => FutureBuilderPage(),
         '/align_page': (BuildContext context) => AlignDemoPage(),
         '/animate_page': (BuildContext context) => AnimateDemoPage(),
-        '/stack_positioned_page': (BuildContext context) => StackPositionedPage()
+        '/stack_positioned_page': (BuildContext context) => StackPositionedPage(),
+        '/dialog_page': (BuildContext context) => DialogDemoPage(),
+        '/event_page': (BuildContext context) => EventDemoPage()
       },
       debugShowCheckedModeBanner: false,
     );

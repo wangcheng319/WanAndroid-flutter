@@ -18,59 +18,63 @@ class _ReduxDemoState extends State<ReduxDemo> {
         title: Text("ReduxDemo"),
         centerTitle: true,
       ),
-      body: Column(
-        children: <Widget>[
-          ///获取state数据
-          Container(
-            child: StoreConnector<AppState, AppState>(
-              converter: (store) => store.state,
-              builder: (BuildContext context, vm) {
-                return Column(
-                  children: <Widget>[
-                    Text(vm.mainPageState.counter.toString()),
-                    Text(vm.secondPageState.counter.toString()),
-                  ],
-                );
-              },
-            ),
-          ),
+      body: Center(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              ///获取state数据
+              Container(
+                child: StoreConnector<AppState, AppState>(
+                  converter: (store) => store.state,
+                  builder: (BuildContext context, vm) {
+                    return Column(
+                      children: <Widget>[
+                        Text(vm.mainPageState.counter.toString()),
+                        Text(vm.secondPageState.counter.toString()),
+                      ],
+                    );
+                  },
+                ),
+              ),
 
-          ///修改state数据
-          Container(
-            child: StoreConnector<AppState, VoidCallback>(
-              converter: (store) {
+              ///修改state数据
+              Container(
+                child: StoreConnector<AppState, VoidCallback>(
+                  converter: (store) {
 //                return () => store.dispatch(IncreaseAction(num: 10));
-                return () {
-                  store.dispatch(IncreaseAction(num: 10));
-                  store.dispatch(SecondIncreaseAction(num: 20));
-                };
-              },
-              builder: (context, callback) {
-                return FloatingActionButton(
-                  onPressed: callback,
-                  child: Icon(Icons.add),
-                );
-              },
-            ),
-          ),
+                    return () {
+                      store.dispatch(IncreaseAction(num: 10));
+                      store.dispatch(SecondIncreaseAction(num: 20));
+                    };
+                  },
+                  builder: (context, callback) {
+                    return FloatingActionButton(
+                      onPressed: callback,
+                      child: Icon(Icons.add),
+                    );
+                  },
+                ),
+              ),
 
-          Container(
-            child: StoreConnector<AppState, VoidCallback>(
-              converter: (store) {
+              Container(
+                child: StoreConnector<AppState, VoidCallback>(
+                  converter: (store) {
 //                return () => store.dispatch(IncreaseAction(num: 10));
-                return () {
-                  store.dispatch(SubtractAction(num: 10));
-                };
-              },
-              builder: (context, callback) {
-                return RaisedButton(
-                  onPressed: callback,
-                  child: Text('减'),
-                );
-              },
-            ),
+                    return () {
+                      store.dispatch(SubtractAction(num: 10));
+                    };
+                  },
+                  builder: (context, callback) {
+                    return RaisedButton(
+                      onPressed: callback,
+                      child: Text('减'),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

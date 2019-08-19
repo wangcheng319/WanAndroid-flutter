@@ -81,7 +81,7 @@ class _StackPositionedPageState extends State<StackPositionedPage> {
                 child: FlatButton(
                     onPressed: null,
                     child: Text(
-                      '返回',
+                      '绝对定位',
                       style: TextStyle(color: Colors.white),
                     )),
               ),

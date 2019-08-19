@@ -44,7 +44,8 @@ class _ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Column(
+        child: Wrap(
+          spacing: 20,
           children: <Widget>[
             RaisedButton(
               child: Text("命名路由-跳转"),

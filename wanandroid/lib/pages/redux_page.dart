@@ -53,6 +53,23 @@ class _ReduxDemoState extends State<ReduxDemo> {
               },
             ),
           ),
+
+          Container(
+            child: StoreConnector<AppState, VoidCallback>(
+              converter: (store) {
+//                return () => store.dispatch(IncreaseAction(num: 10));
+                return () {
+                  store.dispatch(SubtractAction(num: 10));
+                };
+              },
+              builder: (context, callback) {
+                return RaisedButton(
+                  onPressed: callback,
+                  child: Text('减'),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

@@ -127,13 +127,15 @@ class _ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin
                 onPressed: () {
                   Navigator.of(context).pushNamed('/provider_page');
                 }),
+
+            ///redux
             RaisedButton(
                 child: StoreConnector<AppState, MainPageState>(
                   converter: (store) => store.state.mainPageState,
                   builder: (BuildContext context, vm) {
                     return Column(
                       children: <Widget>[
-                        Text('mainStateCounter:' + vm.counter.toString()),
+                        Text('redux:' + vm.counter.toString()),
                       ],
                     );
                   },

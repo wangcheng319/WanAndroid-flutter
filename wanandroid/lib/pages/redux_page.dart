@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:wanandroid/store/app/AppState.dart';
 import 'package:wanandroid/store/modules/mainPage/action.dart';
 import 'package:wanandroid/store/modules/mainPage/state.dart';
+import 'package:wanandroid/store/modules/secondPage/action.dart';
 
 class ReduxDemo extends StatefulWidget {
   @override
@@ -21,12 +22,13 @@ class _ReduxDemoState extends State<ReduxDemo> {
         children: <Widget>[
           ///获取state数据
           Container(
-            child: StoreConnector<AppState, MainPageState>(
-              converter: (store) => store.state.mainPageState,
+            child: StoreConnector<AppState, AppState>(
+              converter: (store) => store.state,
               builder: (BuildContext context, vm) {
                 return Column(
                   children: <Widget>[
-                    Text(vm.counter.toString()),
+                    Text(vm.mainPageState.counter.toString()),
+                    Text(vm.secondPageState.counter.toString()),
                   ],
                 );
               },
@@ -37,7 +39,11 @@ class _ReduxDemoState extends State<ReduxDemo> {
           Container(
             child: StoreConnector<AppState, VoidCallback>(
               converter: (store) {
-                return () => store.dispatch(IncreaseAction(num: 10));
+//                return () => store.dispatch(IncreaseAction(num: 10));
+                return () {
+                  store.dispatch(IncreaseAction(num: 10));
+                  store.dispatch(SecondIncreaseAction(num: 20));
+                };
               },
               builder: (context, callback) {
                 return FloatingActionButton(
@@ -46,7 +52,7 @@ class _ReduxDemoState extends State<ReduxDemo> {
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );

@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:provider/provider.dart';
 import 'package:wanandroid/main.dart';
 import 'package:wanandroid/models/user.dart';
 import 'package:wanandroid/pages/event_bus_page.dart';
 import 'package:wanandroid/pages/list_details_page.dart';
 import 'package:wanandroid/provider/CounterModel.dart';
+import 'package:wanandroid/store/app/AppState.dart';
+import 'package:wanandroid/store/modules/mainPage/state.dart';
 
 class ProjectPage extends StatefulWidget {
   @override
@@ -123,6 +126,20 @@ class _ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin
                 child: Text("Provider:${Provider.of<CounterModel>(context).value}"),
                 onPressed: () {
                   Navigator.of(context).pushNamed('/provider_page');
+                }),
+            RaisedButton(
+                child: StoreConnector<AppState, MainPageState>(
+                  converter: (store) => store.state.mainPageState,
+                  builder: (BuildContext context, vm) {
+                    return Column(
+                      children: <Widget>[
+                        Text('mainStateCounter:' + vm.counter.toString()),
+                      ],
+                    );
+                  },
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/redux_page');
                 }),
             Container(
               margin: EdgeInsets.all(10),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class AnimateDemoPage extends StatefulWidget {
@@ -12,6 +14,7 @@ class _AnimateDemoPageState extends State<AnimateDemoPage> with TickerProviderSt
   int _count = 0;
   Animation<int> _alpha;
   double value;
+  Window _window;
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +98,18 @@ class _AnimateDemoPageState extends State<AnimateDemoPage> with TickerProviderSt
                         });
                       },
                     ),
+                    Container(
+                        child: InkWell(
+                      onTap: () {
+                        _toHeroPage();
+                      },
+                      child: Hero(
+                          tag: "photo",
+                          child: Image.network(
+                            "http://pic1.win4000.com/wallpaper/a/59bb838ac9a22.jpg",
+                            width: 100,
+                          )),
+                    )),
                   ],
                 ),
               ),
@@ -128,5 +143,24 @@ class _AnimateDemoPageState extends State<AnimateDemoPage> with TickerProviderSt
         print('${controller.value}-${_alpha.value}');
       });
     controller.forward();
+  }
+
+  void _toHeroPage() {
+    Navigator.push(context, PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
+      return new FadeTransition(
+        opacity: animation,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Hero动画"),
+          ),
+          body: Center(
+            child: Hero(
+                tag: "photo",
+                child: Image.network("http://pic1.win4000.com/wallpaper/a/59bb838ac9a22.jpg")),
+          ),
+        ),
+      );
+    }));
   }
 }

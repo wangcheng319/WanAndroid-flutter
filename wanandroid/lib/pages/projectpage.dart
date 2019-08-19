@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wanandroid/main.dart';
 import 'package:wanandroid/models/user.dart';
 import 'package:wanandroid/pages/event_bus_page.dart';
 import 'package:wanandroid/pages/list_details_page.dart';
+import 'package:wanandroid/provider/CounterModel.dart';
 
 class ProjectPage extends StatefulWidget {
   @override
@@ -99,11 +101,14 @@ class _ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin
               },
               child: Text("事件"),
             ),
-            RaisedButton(
-                child: Text("Stack,Positioned"),
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/stack_positioned_page');
-                }),
+            MultiProvider(
+              providers: [Provider<User>.value(value: User(name: "jack", age: 33))],
+              child: RaisedButton(
+                  child: Text("Stack,Positioned"),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/stack_positioned_page');
+                  }),
+            ),
             RaisedButton(
                 child: Text("EventBus"),
                 onPressed: () {
@@ -113,6 +118,11 @@ class _ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin
                   eventBus.fire(new UserLoggedInEvent(user));
                   print("发送");
                   Navigator.of(context).pushNamed('/stack_positioned_page');
+                }),
+            RaisedButton(
+                child: Text("Provider:${Provider.of<CounterModel>(context).value}"),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/provider_page');
                 }),
             Container(
               margin: EdgeInsets.all(10),

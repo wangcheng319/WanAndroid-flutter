@@ -1,13 +1,18 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wanandroid/models/order.dart';
+import 'package:wanandroid/models/user.dart';
 import 'package:wanandroid/pages/align_page.dart';
 import 'package:wanandroid/pages/animate_page.dart';
 import 'package:wanandroid/pages/dialog_page.dart';
 import 'package:wanandroid/pages/event_page.dart';
 import 'package:wanandroid/pages/future_builder_page.dart';
 import 'package:wanandroid/pages/list_details_page.dart';
+import 'package:wanandroid/pages/privoder_page.dart';
 import 'package:wanandroid/pages/projectpage.dart';
 import 'package:wanandroid/pages/stack_positioned_page.dart';
+import 'package:wanandroid/provider/CounterModel.dart';
 
 import 'pages/homepage.dart';
 import 'pages/tyhj.dart';
@@ -22,23 +27,30 @@ EventBus eventBus = EventBus();
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Container(
+      //定义全局的Provider
+      child: ChangeNotifierProvider.value(
+        value: CounterModel(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: MyHomePage(title: 'Flutter Demo Home Page'),
+          routes: <String, WidgetBuilder>{
+            //1
+            '/list_details': (BuildContext context) => ListDetailsPage(),
+            '/future_builder_page': (BuildContext context) => FutureBuilderPage(),
+            '/align_page': (BuildContext context) => AlignDemoPage(),
+            '/animate_page': (BuildContext context) => AnimateDemoPage(),
+            '/stack_positioned_page': (BuildContext context) => StackPositionedPage(),
+            '/dialog_page': (BuildContext context) => DialogDemoPage(),
+            '/event_page': (BuildContext context) => EventDemoPage(),
+            '/provider_page': (BuildContext context) => PrivoderPage(),
+          },
+          debugShowCheckedModeBanner: false,
+        ),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-      routes: <String, WidgetBuilder>{
-        //1
-        '/list_details': (BuildContext context) => ListDetailsPage(),
-        '/future_builder_page': (BuildContext context) => FutureBuilderPage(),
-        '/align_page': (BuildContext context) => AlignDemoPage(),
-        '/animate_page': (BuildContext context) => AnimateDemoPage(),
-        '/stack_positioned_page': (BuildContext context) => StackPositionedPage(),
-        '/dialog_page': (BuildContext context) => DialogDemoPage(),
-        '/event_page': (BuildContext context) => EventDemoPage()
-      },
-      debugShowCheckedModeBanner: false,
     );
   }
 }

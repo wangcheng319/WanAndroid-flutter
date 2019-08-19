@@ -87,7 +87,7 @@ class _StackPositionedPageState extends State<StackPositionedPage> {
               ),
               left: MediaQuery.of(context).size.width / 2 - 50,
               top: MediaQuery.of(context).size.height / 2 - 150,
-            )
+            ),
           ],
         ),
       ),

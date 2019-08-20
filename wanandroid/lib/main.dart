@@ -10,6 +10,7 @@ import 'package:wanandroid/pages/dialog_page.dart';
 import 'package:wanandroid/pages/event_page.dart';
 import 'package:wanandroid/pages/future_builder_page.dart';
 import 'package:wanandroid/pages/list_details_page.dart';
+import 'package:wanandroid/pages/method_channel_page.dart';
 import 'package:wanandroid/pages/privoder_page.dart';
 import 'package:wanandroid/pages/projectpage.dart';
 import 'package:wanandroid/pages/redux_page.dart';
@@ -20,7 +21,7 @@ import 'package:wanandroid/store/app/AppState.dart';
 import 'package:wanandroid/store/index.dart';
 
 import 'pages/homepage.dart';
-import 'pages/tyhj.dart';
+import 'pages/sliver_page.dart';
 import 'pages/weixinpage.dart';
 
 void main() {
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
                 '/event_page': (BuildContext context) => EventDemoPage(),
                 '/provider_page': (BuildContext context) => PrivoderPage(),
                 '/redux_page': (BuildContext context) => ReduxDemo(),
+                '/method_channel_page': (BuildContext context) => MethodChannelDemo(),
               },
               debugShowCheckedModeBanner: false,
             ),

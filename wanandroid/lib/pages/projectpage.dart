@@ -144,6 +144,12 @@ class _ProjectPageState extends State<ProjectPage> with TickerProviderStateMixin
                 onPressed: () {
                   Navigator.of(context).pushNamed('/redux_page');
                 }),
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/method_channel_page');
+              },
+              child: Text('MethodChannel原生交互'),
+            ),
             Container(
               margin: EdgeInsets.all(10),
               decoration: BoxDecoration(

@@ -48,17 +48,28 @@ class _TyhjHomePageState extends State<TyhjHomePage> {
                 centerTitle: true,
                 background: buildBannerLayout()),
           ),
+
+          ///如果要添加常规widget到CustomScrollView中，必须用SliverToBoxAdapter包裹起来
           SliverToBoxAdapter(
             child: _buildSearch(),
           ),
           SliverFixedExtentList(
             itemExtent: 100.0,
+
+            ///SliverChildListDelegate会一次性把全部item绘制出来
             delegate: SliverChildListDelegate(
               products.map((product) {
                 return _buildItemList(product);
               }).toList(),
             ),
           ),
+          SliverList(
+
+              ///SliverChildBuilderDelegate之渲染屏幕范围内的item
+              delegate: SliverChildBuilderDelegate(
+            (context, index) => renderItem(context, index),
+            childCount: 10,
+          )),
           SliverToBoxAdapter(
             child: _buildFooter(),
           ),
@@ -68,11 +79,15 @@ class _TyhjHomePageState extends State<TyhjHomePage> {
   }
 
   Widget _buildItemList(product) {
-    return RaisedButton(
-      child: Text("NO."),
-      textColor: Colors.white,
+    return Container(
+      margin: EdgeInsets.all(10),
+      alignment: Alignment.center,
+      child: Text(
+        "NO.$product",
+        style: TextStyle(color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
       color: Colors.blue,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
     );
   }
 
@@ -108,6 +123,19 @@ class _TyhjHomePageState extends State<TyhjHomePage> {
     return Image.network(
       "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1577759731,3108671782&fm=27&gp=0.jpg", //datas[index]["imagePath"]
       fit: BoxFit.fill,
+    );
+  }
+
+  renderItem(BuildContext context, int index) {
+    return Container(
+      margin: EdgeInsets.all(10),
+      alignment: Alignment.center,
+      child: Text(
+        "NO.$index",
+        style: TextStyle(color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
+      color: Colors.amber,
     );
   }
 }

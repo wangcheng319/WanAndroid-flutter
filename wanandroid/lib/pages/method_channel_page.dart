@@ -53,7 +53,17 @@ class _MethodChannelDemoState extends State<MethodChannelDemo> {
       ),
       body: Center(
         child: Container(
-          child: Text('MethodChannel'),
+          child: Column(
+            children: <Widget>[
+              Text('MethodChannelDemo'),
+              Container(
+                ///引入原生view
+                child: AndroidView(viewType: 'nativeview'),
+                width: 200,
+                height: 200,
+              )
+            ],
+          ),
         ),
       ),
     );

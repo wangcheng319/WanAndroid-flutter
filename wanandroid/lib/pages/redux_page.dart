@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:wanandroid/models/user.dart';
 import 'package:wanandroid/store/app/AppState.dart';
 import 'package:wanandroid/store/modules/mainPage/action.dart';
 import 'package:wanandroid/store/modules/mainPage/state.dart';
@@ -31,6 +32,7 @@ class _ReduxDemoState extends State<ReduxDemo> {
                       children: <Widget>[
                         Text(vm.mainPageState.counter.toString()),
                         Text(vm.secondPageState.counter.toString()),
+                        Text(vm.mainPageState.user.name),
                       ],
                     );
                   },
@@ -45,6 +47,7 @@ class _ReduxDemoState extends State<ReduxDemo> {
                     return () {
                       store.dispatch(IncreaseAction(num: 10));
                       store.dispatch(SecondIncreaseAction(num: 20));
+                      store.dispatch(SaveUserInfoAction(user: User(name: 'Wangc', age: 3)));
                     };
                   },
                   builder: (context, callback) {

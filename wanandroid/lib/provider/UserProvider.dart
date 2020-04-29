@@ -9,5 +9,6 @@ class UserProvider with ChangeNotifier {
   void setUser(String name, int age) {
     _user.name = name;
     _user.age = age;
+    notifyListeners();
   }
 }

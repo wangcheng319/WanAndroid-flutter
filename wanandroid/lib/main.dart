@@ -1,22 +1,11 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
-import 'package:wanandroid/models/order.dart';
-import 'package:wanandroid/models/user.dart';
-import 'package:wanandroid/pages/align_page.dart';
-import 'package:wanandroid/pages/animate_page.dart';
-import 'package:wanandroid/pages/dialog_page.dart';
-import 'package:wanandroid/pages/event_page.dart';
-import 'package:wanandroid/pages/future_builder_page.dart';
-import 'package:wanandroid/pages/list_details_page.dart';
-import 'package:wanandroid/pages/method_channel_page.dart';
-import 'package:wanandroid/pages/privoder_page.dart';
 import 'package:wanandroid/pages/projectpage.dart';
-import 'package:wanandroid/pages/redux_page.dart';
-import 'package:wanandroid/pages/stack_positioned_page.dart';
 import 'package:wanandroid/provider/CounterModel.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:wanandroid/routes/routes.dart';
 import 'package:wanandroid/store/app/AppState.dart';
 import 'package:wanandroid/store/index.dart';
 
@@ -51,20 +40,8 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              home: MyHomePage(title: 'Flutter Demo Home Page'),
-              routes: <String, WidgetBuilder>{
-                //1
-                '/list_details': (BuildContext context) => ListDetailsPage(),
-                '/future_builder_page': (BuildContext context) => FutureBuilderPage(),
-                '/align_page': (BuildContext context) => AlignDemoPage(),
-                '/animate_page': (BuildContext context) => AnimateDemoPage(),
-                '/stack_positioned_page': (BuildContext context) => StackPositionedPage(),
-                '/dialog_page': (BuildContext context) => DialogDemoPage(),
-                '/event_page': (BuildContext context) => EventDemoPage(),
-                '/provider_page': (BuildContext context) => PrivoderPage(),
-                '/redux_page': (BuildContext context) => ReduxDemo(),
-                '/method_channel_page': (BuildContext context) => MethodChannelDemo(),
-              },
+              home: MyHomePage(title: 'Flutter'),
+              routes: Routes.routes,
               debugShowCheckedModeBanner: false,
             ),
           ),
@@ -79,12 +56,14 @@ class MyHomePage extends StatefulWidget {
   //用于标记从其他页面返回后需要跳转到第几个tab页
   static const int Main = 333;
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState(title);
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  _MyHomePageState(this._name);
   /*底部导航栏*/
   int _currentIndex = 0;
+  String _name = "";
 
   final List<BottomNavigationBarItem> _items = <BottomNavigationBarItem>[
     BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("首页")),
@@ -127,6 +106,20 @@ class _MyHomePageState extends State<MyHomePage> {
         type: BottomNavigationBarType.fixed,
         fixedColor: Colors.blueAccent,
       ),
+      floatingActionButton: Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            color: Colors.blueAccent,
+            borderRadius: BorderRadius.circular(200),
+          ),
+          child: Center(
+            child: Text(
+              _name,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
+            ),
+          )),
     );
   }
 

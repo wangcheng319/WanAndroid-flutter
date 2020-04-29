@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:http/http.dart' as http;
 
 import '../data/article_list.dart';
@@ -224,9 +223,9 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
 
   ///跳转到webview
   void jumpToWebView(url) {
-    Navigator.push(context, new MaterialPageRoute(builder: (context) {
-      return WebviewScaffold(url: url);
-    }));
+//    Navigator.push(context, new MaterialPageRoute(builder: (context) {
+//      return WebviewScaffold(url: url);
+//    }));
   }
 
   ///设置为true，页面切换会保存状态

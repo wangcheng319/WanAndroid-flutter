@@ -2,7 +2,6 @@ package io.flutter.plugins;
 
 import com.example.wanandroid.MyView;
 import com.example.wanandroid.NativeViewFactory;
-import com.flutter_webview_plugin.FlutterWebviewPlugin;
 
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.StandardMessageCodec;
